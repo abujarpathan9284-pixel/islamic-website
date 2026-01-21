@@ -2,10 +2,11 @@ const mysql = require("mysql2");
 const util = require("util");
 
 const conn = mysql.createConnection({
-    host: "localhost",
-    user :"root",
-    password :"root",
-    database :"islamicweb"
+    host: "b2fl8wnu0aqvpym3lxg7-mysql.services.clever-cloud.com",
+    user :"uuey0xn5de6vpqhd",
+    password :"D1HQfByqcz7hylIt5QTI",
+    database :"b2fl8wnu0aqvpym3lxg7",
+    "port":"3306"
 });
 
 
