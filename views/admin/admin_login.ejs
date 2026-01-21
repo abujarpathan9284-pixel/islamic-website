@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, lightgreen 0%, #90f395 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-wrapper {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, green 0%, #2575fc 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-section::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: white;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .admin-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .tagline {
+            opacity: 0.9;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .login-form-section {
+            padding: 60px 40px 40px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #6a11cb;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+        }
+
+        .input-field:hover {
+            border-color: #b3b3b3;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #11cb74 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 20px;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .demo-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 40px;
+            border-left: 5px solid #6a11cb;
+        }
+
+        .demo-title {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-title::before {
+            content: 'ℹ️';
+            font-size: 20px;
+        }
+
+        .credentials {
+            display: grid;
+            gap: 15px;
+        }
+
+        .cred-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .cred-label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cred-value {
+            color: #333;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Consolas', monospace;
+        }
+
+        .admin-notes {
+            margin-top: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff9db 0%, #ffecb3 100%);
+            border-radius: 12px;
+            border: 1px solid #ffd54f;
+        }
+
+        .notes-title {
+            color: #e65100;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notes-title::before {
+            content: '⚠️';
+        }
+
+        .notes-list {
+            list-style: none;
+        }
+
+        .notes-list li {
+            padding: 8px 0;
+            color: #333;
+            font-size: 14px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .notes-list li::before {
+            content: '•';
+            color: #e65100;
+            font-weight: bold;
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+            top: 5px;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .powered-by {
+            margin-top: 10px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .form-disclaimer {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #2e7d32;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-disclaimer::before {
+            content: 'ℹ️ ';
+        }
+
+        @media (max-width: 480px) {
+            .login-wrapper {
+                border-radius: 15px;
+            }
+            
+            .header-section {
+                padding: 40px 25px;
+            }
+            
+            .login-form-section {
+                padding: 50px 25px 30px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .input-field {
+                padding: 16px;
+            }
+            
+            .submit-btn {
+                padding: 18px;
+            }
+        }
+
+        /* Loading state simulation */
+        .submit-btn:hover::after {
+            content: ' (Connecting...)';
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Visual feedback for required fields */
+        .input-field:required:valid {
+            border-color: #4caf50;
+            background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 100%);
+        }
+
+        /* Password field specific styling */
+        .password-wrapper::after {
+            content: '🔒';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="header-section">
+            <div class="admin-icon">⚙️</div>
+            <h1>IQRA ADMIN PORTAL</h1>
+            <p class="tagline">Iqra Learning Administration Dashboard</p>
+        </div>
+        
+        <div class="login-form-section">
+            
+            
+            <form action="/admin/dashbord" method="post" autocomplete="off">
+                <div class="form-group">
+                    <label for="username" class="input-label">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="input-field" 
+                        placeholder="Enter admin username" 
+                        required
+                        autocomplete="off"
+                        value="admin"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="input-label">Password</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="input-field" 
+                            placeholder="Enter your password" 
+                            required
+                            autocomplete="off"
+                            value="admin123"
+                        >
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">              
+                Login to Dashboard</button>
+            </form>
+            
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+
+            <!-- Company Info -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5>
+                    <i class="fas fa-book-open"></i>
+                    <%= detiles[0].company_name %>
+                </h5>
+                <p>
+                    Your trusted digital platform delivering authentic, accurate, and timely content.
+                    We aim to educate, inform, and inspire our audience with quality knowledge.
+                </p>
+
+                <ul class="list-unstyled mt-3">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <%= detiles[0].company_address %>
+                        <%=detiles[0].company_name%>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        +91 <%= detiles[0].company_mo %>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <%= detiles[0].company_email %>
+                    </li>
+                </ul>
+            </div>
+<br><br>
+            <!-- Information Links -->
+            <div class="col-lg-2 col-md-6 mb-4" style="float: left ; margin-right: 100px;" >
+                <h5>Information</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Site Map</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal Links -->
+            <div class="col-lg-2 col-md-6 mb-4" style="float: left; margin-right: 50px;">
+                <h5>Legal</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                </ul>
+            </div>
+
+            <!-- Categories -->
+            <div class="col-lg-2 col-md-6 mb-4" style="float: left; margin-left: 40px;">
+                <h5>Categories</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/category/news">News</a></li>
+                    <li><a href="/category/technology">Technology</a></li>
+                    <li><a href="/category/business">Business</a></li>
+                    <li><a href="/category/lifestyle">Lifestyle</a></li>
+                    <li><a href="/category/education">Education</a></li>
+                </ul>
+            </div>
+                <br><br>
+            <!-- Newsletter & Social -->
+          
+<br><br><br><br><br><br>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Your Email">
+                    <button class="btn btn-outline-light" type="button">Subscribe</button>
+                </div>
+
+                <div class="mt-4">
+                    <a href="<%= detiles[0].company_face %>" class="me-3" style="font-size: 1.5rem;">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="<%= detiles[0].company_what %>" class="me-3" style="font-size: 1.5rem;">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="<%= detiles[0].company_insta %>" class="me-3" style="font-size: 1.5rem;">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="<%= detiles[0].company_youtube %>" class="me-3" style="font-size: 1.5rem;">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="<%= detiles[0].company_linkedin %>" style="font-size: 1.5rem;">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Copyright -->
+        <div class="copyright text-center mt-4 " style="margin-right: 100px;">
+            <p>
+                &copy; 2024 <%= detiles[0].company_name %>. All rights reserved |
+                Designed with AP Creation
+            </p>
+        </div>
+    </div>
+</footer>

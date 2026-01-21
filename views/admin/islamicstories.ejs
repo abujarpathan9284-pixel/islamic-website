@@ -1,0 +1,30 @@
+<%-include("navbar")%>
+
+<div class="container">
+    <h1>Islamic Stories Update</h1>
+    <form action="/admin/islamicstoriesu" method="post"  enctype="multipart/form-data">
+        <div class="row" style="border: 2px solid black;">
+            <div class="col-md-6 p-3">
+                story title 
+                <input type="text" class="form-control" value="<%=info[0].story_title%>" name="story_title" id="">
+            </div>
+            <div class="col-md-6 p-3">
+                Story Image
+                <input type="file" class="form-control" value="<%=info[0].story_img%>" name="story_img" id="">
+            </div>
+             <div class="col-md-6 p-3">
+                Story Description
+                <textarea name="description"    class="form-control" id=""><%=info[0].description%></textarea>
+            </div>
+            <div class="col-md-6 p-3">
+                Story moral
+                <textarea name="story_moral"  class="form-control" id=""><%=info[0].story_moral%></textarea>
+            </div>
+        </div>
+         <div class="col-md-12 mt-2 " style="text-align: center;">
+            <button class="btn btn-success" style="text-align: center;">Save</button>
+        </div>
+       
+    </form>
+    
+</div>

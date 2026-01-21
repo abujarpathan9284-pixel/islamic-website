@@ -1,0 +1,1953 @@
+<%-include("navbar")%>
+
+<style>
+    /* User Management Panel Styles */
+    .user-management {
+        padding: 20px 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+    }
+
+    /* Header Section */
+    .management-header {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .management-header h1 {
+        color: var(--green-color);
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        background: linear-gradient(90deg, var(--green-color), var(--gold-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .management-header p {
+        color: #666;
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto 20px;
+    }
+
+    /* Stats Cards */
+    .user-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        transition: all 0.3s ease;
+        border-top: 4px solid var(--green-color);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .stat-card.total-users { border-top-color: var(--green-color); }
+    .stat-card.active-users { border-top-color: #3498db; }
+    .stat-card.new-users { border-top-color: #9b59b6; }
+    .stat-card.inactive-users { border-top-color: #e74c3c; }
+
+    .stat-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: var(--green-color);
+    }
+
+    .stat-card.total-users .stat-icon { color: var(--green-color); }
+    .stat-card.active-users .stat-icon { color: #3498db; }
+    .stat-card.new-users .stat-icon { color: #9b59b6; }
+    .stat-card.inactive-users .stat-icon { color: #e74c3c; }
+
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    /* Main Content */
+    .management-content {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+
+    /* Toolbar */
+    .toolbar {
+        padding: 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .search-box {
+        position: relative;
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 12px 20px 12px 45px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+        outline: none;
+        border-color: var(--green-color);
+        box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+    }
+
+    .search-box i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #95a5a6;
+    }
+
+    .toolbar-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: var(--green-color);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #27ae60;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: var(--green-color);
+        border: 2px solid var(--green-color);
+    }
+
+    .btn-secondary:hover {
+        background: var(--green-color);
+        color: white;
+    }
+
+    .btn-danger {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    /* Filters */
+    .filters {
+        padding: 15px 20px;
+        background: white;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        min-width: 150px;
+    }
+
+    .filter-label {
+        font-size: 0.85rem;
+        color: #666;
+        font-weight: 600;
+    }
+
+    .filter-select {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: white;
+        color: #333;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+    .filter-select:focus {
+        outline: none;
+        border-color: var(--green-color);
+        box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.1);
+    }
+
+    /* Users Table */
+    .users-table-container {
+        overflow-x: auto;
+        padding: 20px;
+    }
+
+    .users-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .users-table thead {
+        background: #f8f9fa;
+    }
+
+    .users-table th {
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+        color: #2c3e50;
+        border-bottom: 2px solid #e9ecef;
+        white-space: nowrap;
+    }
+
+    .users-table tbody tr {
+        border-bottom: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .users-table tbody tr:hover {
+        background: #f8f9fa;
+    }
+
+    .users-table td {
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+    /* User Avatar */
+    .user-avatar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .avatar-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #f1f1f1;
+    }
+
+    .avatar-text {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .avatar-bg-1 { background: var(--green-color); }
+    .avatar-bg-2 { background: #3498db; }
+    .avatar-bg-3 { background: #9b59b6; }
+    .avatar-bg-4 { background: #e74c3c; }
+    .avatar-bg-5 { background: #f39c12; }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-name {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 2px;
+    }
+
+    .user-email {
+        font-size: 0.85rem;
+        color: #7f8c8d;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        gap: 5px;
+    }
+
+    .status-active {
+        background: rgba(46, 204, 113, 0.15);
+        color: #27ae60;
+    }
+
+    .status-inactive {
+        background: rgba(231, 76, 60, 0.15);
+        color: #c0392b;
+    }
+
+    .status-pending {
+        background: rgba(241, 196, 15, 0.15);
+        color: #d35400;
+    }
+
+    /* Role Tags */
+    .role-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        gap: 5px;
+    }
+
+    .role-admin {
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        color: white;
+    }
+
+    .role-editor {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+    }
+
+    .role-user {
+        background: linear-gradient(135deg, var(--green-color), #27ae60);
+        color: white;
+    }
+
+    .role-guest {
+        background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        color: white;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        background: #f8f9fa;
+        color: #666;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-icon:hover {
+        background: var(--green-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .btn-icon.edit:hover {
+        background: #3498db;
+    }
+
+    .btn-icon.delete:hover {
+        background: #e74c3c;
+    }
+
+    .btn-icon.view:hover {
+        background: #9b59b6;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 20px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .page-btn {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        background: #f8f9fa;
+        color: #666;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .page-btn:hover:not(:disabled) {
+        background: var(--green-color);
+        color: white;
+    }
+
+    .page-btn.active {
+        background: var(--green-color);
+        color: white;
+    }
+
+    .page-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .page-info {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        padding: 20px;
+    }
+
+    .modal-overlay.show {
+        display: flex;
+    }
+
+    .modal {
+        background: white;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modal-header {
+        padding: 20px;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #7f8c8d;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .modal-close:hover {
+        color: #e74c3c;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 20px;
+        border-top: 1px solid #e9ecef;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    /* Form Styles */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 0.95rem;
+    }
+
+    .form-label .required {
+        color: #e74c3c;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--green-color);
+        box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 30px;
+    }
+
+    /* Loading State */
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid var(--green-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #7f8c8d;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        color: #bdc3c7;
+    }
+
+    .empty-state h3 {
+        margin-bottom: 10px;
+        color: #95a5a6;
+    }
+
+    .empty-state p {
+        margin-bottom: 20px;
+    }
+
+    /* Confirmation Dialog */
+    .confirmation-dialog {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .confirmation-icon {
+        font-size: 3rem;
+        color: #e74c3c;
+        margin-bottom: 20px;
+    }
+
+    .confirmation-message {
+        margin-bottom: 30px;
+        color: #2c3e50;
+        font-size: 1.1rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .management-header h1 {
+            font-size: 2rem;
+        }
+
+        .user-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .toolbar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-box {
+            min-width: 100%;
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .modal {
+            max-width: 95%;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .user-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .filters {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .filter-group {
+            min-width: 100%;
+        }
+
+        .user-avatar {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .status-badge,
+        .role-tag {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .modal-footer {
+            flex-direction: column;
+        }
+
+        .modal-footer .btn {
+            width: 100%;
+        }
+    }
+
+    /* Bulk Actions */
+    .bulk-actions {
+        padding: 15px 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .bulk-actions.show {
+        display: flex;
+    }
+
+    .selected-count {
+        font-weight: 600;
+        color: var(--green-color);
+    }
+
+    /* User View Modal */
+    .user-profile-view {
+        padding: 20px;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+        border: 4px solid var(--green-color);
+    }
+
+    .profile-name {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .profile-role {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        background: var(--green-color);
+        color: white;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .profile-email {
+        color: #7f8c8d;
+        font-size: 1rem;
+    }
+
+    .profile-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .detail-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .detail-label {
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        margin-bottom: 5px;
+    }
+
+    .detail-value {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    /* Checkbox for bulk selection */
+    .user-select {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+</style>
+
+<!-- User Management Panel -->
+<div class="user-management">
+    <div class="container">
+        <!-- Header -->
+        <div class="management-header">
+            <h1><i class="fas fa-users-cog"></i> User Management</h1>
+            <p>Manage user accounts, roles, permissions, and access controls</p>
+            
+            <div class="toolbar-actions">
+                <button class="btn btn-primary" id="addUserBtn">
+                    <i class="fas fa-user-plus"></i> Add New User
+                </button>
+                <button class="btn btn-secondary" id="exportUsersBtn">
+                    <i class="fas fa-download"></i> Export Users
+                </button>
+                <button class="btn btn-secondary" id="refreshUsersBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- User Statistics -->
+        <div class="user-stats">
+            <div class="stat-card total-users">
+                <i class="fas fa-users stat-icon"></i>
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            
+            <div class="stat-card active-users">
+                <i class="fas fa-user-check stat-icon"></i>
+                <div class="stat-number" id="activeUsers">0</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            
+            <div class="stat-card new-users">
+                <i class="fas fa-user-clock stat-icon"></i>
+                <div class="stat-number" id="newUsers">0</div>
+                <div class="stat-label">New This Month</div>
+            </div>
+            
+            <div class="stat-card inactive-users">
+                <i class="fas fa-user-slash stat-icon"></i>
+                <div class="stat-number" id="inactiveUsers">0</div>
+                <div class="stat-label">Inactive Users</div>
+            </div>
+        </div>
+
+        <!-- Bulk Actions Bar -->
+        <div class="bulk-actions" id="bulkActions">
+            <div class="selected-count">
+                <span id="selectedCount">0</span> users selected
+            </div>
+            <div class="toolbar-actions">
+                <button class="btn btn-secondary btn-sm" id="bulkActivateBtn">
+                    <i class="fas fa-check-circle"></i> Activate
+                </button>
+                <button class="btn btn-secondary btn-sm" id="bulkDeactivateBtn">
+                    <i class="fas fa-ban"></i> Deactivate
+                </button>
+                <button class="btn btn-danger btn-sm" id="bulkDeleteBtn">
+                    <i class="fas fa-trash"></i> Delete Selected
+                </button>
+                <button class="btn btn-secondary btn-sm" id="clearSelectionBtn">
+                    <i class="fas fa-times"></i> Clear
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="management-content">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchUsers" placeholder="Search users by name, email, or role...">
+                </div>
+                
+                <div class="toolbar-actions">
+                    <button class="btn btn-secondary" id="filterToggleBtn">
+                        <i class="fas fa-filter"></i> Filters
+                    </button>
+                    <button class="btn btn-secondary" id="columnsToggleBtn">
+                        <i class="fas fa-columns"></i> Columns
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters" id="filtersSection" style="display: none;">
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select class="filter-select" id="filterStatus">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Role</label>
+                    <select class="filter-select" id="filterRole">
+                        <option value="all">All Roles</option>
+                        <option value="admin">Admin</option>
+                        <option value="editor">Editor</option>
+                        <option value="user">User</option>
+                        <option value="guest">Guest</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Registration Date</label>
+                    <select class="filter-select" id="filterDate">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <button class="btn btn-primary" id="applyFiltersBtn">
+                        <i class="fas fa-check"></i> Apply
+                    </button>
+                    <button class="btn btn-secondary" id="clearFiltersBtn">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="users-table-container">
+                <table class="users-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">
+                                <input type="checkbox" id="selectAll" class="user-select">
+                            </th>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Registration Date</th>
+                            <th>Last Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be loaded here -->
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i class="fas fa-users"></i>
+                                    <h3>No Users Found</h3>
+                                    <p>Start by adding your first user</p>
+                                    <button class="btn btn-primary" id="addFirstUserBtn">
+                                        <i class="fas fa-user-plus"></i> Add User
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="page-btn" id="firstPageBtn" disabled>
+                    <i class="fas fa-angle-double-left"></i>
+                </button>
+                <button class="page-btn" id="prevPageBtn" disabled>
+                    <i class="fas fa-angle-left"></i>
+                </button>
+                
+                <div class="page-info">
+                    Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                </div>
+                
+                <button class="page-btn" id="nextPageBtn" disabled>
+                    <i class="fas fa-angle-right"></i>
+                </button>
+                <button class="page-btn" id="lastPageBtn" disabled>
+                    <i class="fas fa-angle-double-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit User Modal -->
+<div class="modal-overlay" id="userModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modalTitle">
+                <i class="fas fa-user-plus"></i> Add New User
+            </h3>
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <form id="userForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">First Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Last Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="lastName" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Address <span class="required">*</span></label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Role <span class="required">*</span></label>
+                        <select class="form-control" id="role" required>
+                            <option value="user">User</option>
+                            <option value="editor">Editor</option>
+                            <option value="admin">Admin</option>
+                            <option value="guest">Guest</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Status <span class="required">*</span></label>
+                        <select class="form-control" id="status" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password <span class="required">*</span></label>
+                    <input type="password" class="form-control" id="password" required>
+                    <small class="text-muted">Minimum 8 characters with letters and numbers</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Confirm Password <span class="required">*</span></label>
+                    <input type="password" class="form-control" id="confirmPassword" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Profile Image URL</label>
+                    <input type="url" class="form-control" id="avatarUrl" placeholder="https://example.com/avatar.jpg">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelFormBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitFormBtn">
+                        <span id="submitBtnText">Add User</span>
+                        <span id="submitLoading" class="loading" style="display: none;"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- View User Modal -->
+<div class="modal-overlay" id="viewUserModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <i class="fas fa-user"></i> User Profile
+            </h3>
+            <button class="modal-close" id="closeViewModalBtn">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="user-profile-view" id="userProfileView">
+                <!-- User profile will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal" style="max-width: 400px;">
+        <div class="modal-body">
+            <div class="confirmation-dialog">
+                <div class="confirmation-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="confirmation-message" id="confirmMessage">
+                    Are you sure you want to delete this user?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelConfirmBtn">Cancel</button>
+                    <button class="btn btn-danger" id="confirmActionBtn">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    // User Management Panel JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize variables
+        let usersData = [];
+        let filteredUsers = [];
+        let selectedUsers = new Set();
+        let currentPage = 1;
+        const usersPerPage = 10;
+        let currentEditUserId = null;
+        
+        // DOM Elements
+        const elements = {
+            // Statistics
+            totalUsers: document.getElementById('totalUsers'),
+            activeUsers: document.getElementById('activeUsers'),
+            newUsers: document.getElementById('newUsers'),
+            inactiveUsers: document.getElementById('inactiveUsers'),
+            
+            // Table and body
+            usersTable: document.getElementById('usersTable'),
+            usersTableBody: document.getElementById('usersTableBody'),
+            
+            // Search and filters
+            searchUsers: document.getElementById('searchUsers'),
+            filterStatus: document.getElementById('filterStatus'),
+            filterRole: document.getElementById('filterRole'),
+            filterDate: document.getElementById('filterDate'),
+            
+            // Buttons
+            addUserBtn: document.getElementById('addUserBtn'),
+            exportUsersBtn: document.getElementById('exportUsersBtn'),
+            refreshUsersBtn: document.getElementById('refreshUsersBtn'),
+            filterToggleBtn: document.getElementById('filterToggleBtn'),
+            applyFiltersBtn: document.getElementById('applyFiltersBtn'),
+            clearFiltersBtn: document.getElementById('clearFiltersBtn'),
+            addFirstUserBtn: document.getElementById('addFirstUserBtn'),
+            
+            // Pagination
+            firstPageBtn: document.getElementById('firstPageBtn'),
+            prevPageBtn: document.getElementById('prevPageBtn'),
+            nextPageBtn: document.getElementById('nextPageBtn'),
+            lastPageBtn: document.getElementById('lastPageBtn'),
+            currentPage: document.getElementById('currentPage'),
+            totalPages: document.getElementById('totalPages'),
+            
+            // Bulk actions
+            bulkActions: document.getElementById('bulkActions'),
+            selectAll: document.getElementById('selectAll'),
+            selectedCount: document.getElementById('selectedCount'),
+            bulkActivateBtn: document.getElementById('bulkActivateBtn'),
+            bulkDeactivateBtn: document.getElementById('bulkDeactivateBtn'),
+            bulkDeleteBtn: document.getElementById('bulkDeleteBtn'),
+            clearSelectionBtn: document.getElementById('clearSelectionBtn'),
+            
+            // Modals
+            userModal: document.getElementById('userModal'),
+            viewUserModal: document.getElementById('viewUserModal'),
+            confirmModal: document.getElementById('confirmModal'),
+            
+            // Forms
+            userForm: document.getElementById('userForm'),
+            firstName: document.getElementById('firstName'),
+            lastName: document.getElementById('lastName'),
+            email: document.getElementById('email'),
+            role: document.getElementById('role'),
+            status: document.getElementById('status'),
+            phone: document.getElementById('phone'),
+            password: document.getElementById('password'),
+            confirmPassword: document.getElementById('confirmPassword'),
+            avatarUrl: document.getElementById('avatarUrl'),
+            modalTitle: document.getElementById('modalTitle'),
+            submitBtnText: document.getElementById('submitBtnText'),
+            submitLoading: document.getElementById('submitLoading'),
+            
+            // Close buttons
+            closeModalBtn: document.getElementById('closeModalBtn'),
+            closeViewModalBtn: document.getElementById('closeViewModalBtn'),
+            cancelFormBtn: document.getElementById('cancelFormBtn'),
+            cancelConfirmBtn: document.getElementById('cancelConfirmBtn'),
+            
+            // Confirmation
+            confirmMessage: document.getElementById('confirmMessage'),
+            confirmActionBtn: document.getElementById('confirmActionBtn')
+        };
+        
+        // Generate sample users data
+        function generateSampleUsers() {
+            const firstNames = ['Ahmed', 'Fatima', 'Omar', 'Aisha', 'Yusuf', 'Zainab', 'Bilal', 'Khadija', 'Hassan', 'Maryam', 'Ibrahim', 'Sarah', 'Ali', 'Nadia', 'Mustafa'];
+            const lastNames = ['Ali', 'Khan', 'Hassan', 'Malik', 'Ibrahim', 'Omar', 'Ahmed', 'Hussein', 'Mahmoud', 'Rahman', 'Saleh', 'Abdullah', 'Mohammed', 'Hakim', 'Farouk'];
+            const domains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com'];
+            const roles = ['admin', 'editor', 'user', 'guest'];
+            const statuses = ['active', 'inactive', 'pending'];
+            
+            const users = [];
+            
+            for (let i = 1; i <= 45; i++) {
+                const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                const domain = domains[Math.floor(Math.random() * domains.length)];
+                const role = roles[Math.floor(Math.random() * roles.length)];
+                const status = statuses[Math.floor(Math.random() * statuses.length)];
+                
+                // Generate random dates
+                const registrationDate = new Date();
+                registrationDate.setDate(registrationDate.getDate() - Math.floor(Math.random() * 365));
+                
+                const lastActive = new Date();
+                lastActive.setDate(lastActive.getDate() - Math.floor(Math.random() * 30));
+                
+                users.push({
+                    id: i,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${domain}`,
+                    phone: `+1${Math.floor(Math.random() * 9000000000) + 1000000000}`,
+                    role: role,
+                    status: status,
+                    registrationDate: registrationDate.toISOString().split('T')[0],
+                    lastActive: lastActive.toISOString().split('T')[0],
+                    avatar: i <= 8 ? `https://i.pravatar.cc/150?img=${i}` : null
+                });
+            }
+            
+            return users;
+        }
+        
+        // Initialize users data
+        usersData = generateSampleUsers();
+        filteredUsers = [...usersData];
+        
+        // Initialize dashboard
+        initDashboard();
+        
+        // Event Listeners
+        elements.addUserBtn.addEventListener('click', () => openUserModal());
+        elements.addFirstUserBtn.addEventListener('click', () => openUserModal());
+        elements.exportUsersBtn.addEventListener('click', exportUsers);
+        elements.refreshUsersBtn.addEventListener('click', refreshUsers);
+        elements.filterToggleBtn.addEventListener('click', toggleFilters);
+        elements.applyFiltersBtn.addEventListener('click', applyFilters);
+        elements.clearFiltersBtn.addEventListener('click', clearFilters);
+        
+        elements.searchUsers.addEventListener('input', debounce(searchUsers, 300));
+        elements.filterStatus.addEventListener('change', applyFilters);
+        elements.filterRole.addEventListener('change', applyFilters);
+        elements.filterDate.addEventListener('change', applyFilters);
+        
+        elements.selectAll.addEventListener('change', toggleSelectAll);
+        elements.bulkActivateBtn.addEventListener('click', () => bulkAction('activate'));
+        elements.bulkDeactivateBtn.addEventListener('click', () => bulkAction('deactivate'));
+        elements.bulkDeleteBtn.addEventListener('click', () => bulkAction('delete'));
+        elements.clearSelectionBtn.addEventListener('click', clearSelection);
+        
+        elements.firstPageBtn.addEventListener('click', () => goToPage(1));
+        elements.prevPageBtn.addEventListener('click', () => goToPage(currentPage - 1));
+        elements.nextPageBtn.addEventListener('click', () => goToPage(currentPage + 1));
+        elements.lastPageBtn.addEventListener('click', () => goToPage(Math.ceil(filteredUsers.length / usersPerPage)));
+        
+        elements.closeModalBtn.addEventListener('click', closeModal);
+        elements.closeViewModalBtn.addEventListener('click', closeViewModal);
+        elements.cancelFormBtn.addEventListener('click', closeModal);
+        elements.cancelConfirmBtn.addEventListener('click', closeConfirmModal);
+        
+        elements.userForm.addEventListener('submit', handleFormSubmit);
+        
+        // Functions
+        function initDashboard() {
+            updateStats();
+            renderTable();
+            setupPagination();
+        }
+        
+        function updateStats() {
+            const total = usersData.length;
+            const active = usersData.filter(user => user.status === 'active').length;
+            const newThisMonth = usersData.filter(user => {
+                const regDate = new Date(user.registrationDate);
+                const now = new Date();
+                return now.getMonth() === regDate.getMonth() && now.getFullYear() === regDate.getFullYear();
+            }).length;
+            const inactive = usersData.filter(user => user.status === 'inactive').length;
+            
+            animateCounter(elements.totalUsers, 0, total);
+            animateCounter(elements.activeUsers, 0, active);
+            animateCounter(elements.newUsers, 0, newThisMonth);
+            animateCounter(elements.inactiveUsers, 0, inactive);
+        }
+        
+        function renderTable() {
+            const startIndex = (currentPage - 1) * usersPerPage;
+            const endIndex = startIndex + usersPerPage;
+            const pageUsers = filteredUsers.slice(startIndex, endIndex);
+            
+            if (pageUsers.length === 0) {
+                elements.usersTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="fas fa-search"></i>
+                                <h3>No Users Found</h3>
+                                <p>Try adjusting your search or filters</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            pageUsers.forEach(user => {
+                const isSelected = selectedUsers.has(user.id);
+                const avatarColorClass = `avatar-bg-${(user.id % 5) + 1}`;
+                const initials = `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+                
+                html += `
+                    <tr data-user-id="${user.id}">
+                        <td>
+                            <input type="checkbox" class="user-select" data-user-id="${user.id}" ${isSelected ? 'checked' : ''}>
+                        </td>
+                        <td>
+                            <div class="user-avatar">
+                                ${user.avatar ? 
+                                    `<img src="${user.avatar}" alt="${user.firstName} ${user.lastName}" class="avatar-img">` :
+                                    `<div class="avatar-text ${avatarColorClass}">${initials}</div>`
+                                }
+                                <div class="user-info">
+                                    <div class="user-name">${user.firstName} ${user.lastName}</div>
+                                    <div class="user-email">${user.email}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="role-tag role-${user.role}">
+                                <i class="fas fa-${user.role === 'admin' ? 'crown' : user.role === 'editor' ? 'edit' : 'user'}"></i>
+                                ${user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-${user.status}">
+                                <i class="fas fa-${user.status === 'active' ? 'check-circle' : user.status === 'inactive' ? 'ban' : 'clock'}"></i>
+                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>${formatDate(user.registrationDate)}</td>
+                        <td>${formatDate(user.lastActive)}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon view" onclick="viewUser(${user.id})" title="View Profile">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon edit" onclick="editUser(${user.id})" title="Edit User">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon delete" onclick="deleteUser(${user.id})" title="Delete User">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            elements.usersTableBody.innerHTML = html;
+            
+            // Add event listeners to checkboxes
+            elements.usersTableBody.querySelectorAll('.user-select').forEach(checkbox => {
+                checkbox.addEventListener('change', handleUserSelect);
+            });
+            
+            updateBulkActions();
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        function setupPagination() {
+            const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+            
+            elements.currentPage.textContent = currentPage;
+            elements.totalPages.textContent = totalPages;
+            
+            elements.firstPageBtn.disabled = currentPage === 1;
+            elements.prevPageBtn.disabled = currentPage === 1;
+            elements.nextPageBtn.disabled = currentPage === totalPages;
+            elements.lastPageBtn.disabled = currentPage === totalPages;
+        }
+        
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+            
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            renderTable();
+            setupPagination();
+        }
+        
+        function searchUsers() {
+            const searchTerm = elements.searchUsers.value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                filteredUsers = [...usersData];
+            } else {
+                filteredUsers = usersData.filter(user => {
+                    const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+                    const email = user.email.toLowerCase();
+                    const role = user.role.toLowerCase();
+                    
+                    return fullName.includes(searchTerm) || 
+                           email.includes(searchTerm) || 
+                           role.includes(searchTerm);
+                });
+            }
+            
+            currentPage = 1;
+            renderTable();
+            setupPagination();
+        }
+        
+        function applyFilters() {
+            const statusFilter = elements.filterStatus.value;
+            const roleFilter = elements.filterRole.value;
+            const dateFilter = elements.filterDate.value;
+            
+            filteredUsers = usersData.filter(user => {
+                // Status filter
+                if (statusFilter !== 'all' && user.status !== statusFilter) return false;
+                
+                // Role filter
+                if (roleFilter !== 'all' && user.role !== roleFilter) return false;
+                
+                // Date filter
+                if (dateFilter !== 'all') {
+                    const regDate = new Date(user.registrationDate);
+                    const now = new Date();
+                    
+                    switch (dateFilter) {
+                        case 'today':
+                            return regDate.toDateString() === now.toDateString();
+                        case 'week':
+                            const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            return regDate >= oneWeekAgo;
+                        case 'month':
+                            return regDate.getMonth() === now.getMonth() && 
+                                   regDate.getFullYear() === now.getFullYear();
+                        case 'year':
+                            return regDate.getFullYear() === now.getFullYear();
+                    }
+                }
+                
+                return true;
+            });
+            
+            currentPage = 1;
+            renderTable();
+            setupPagination();
+        }
+        
+        function clearFilters() {
+            elements.filterStatus.value = 'all';
+            elements.filterRole.value = 'all';
+            elements.filterDate.value = 'all';
+            elements.searchUsers.value = '';
+            
+            filteredUsers = [...usersData];
+            currentPage = 1;
+            renderTable();
+            setupPagination();
+        }
+        
+        function toggleFilters() {
+            const filtersSection = document.getElementById('filtersSection');
+            if (filtersSection.style.display === 'none') {
+                filtersSection.style.display = 'flex';
+                elements.filterToggleBtn.innerHTML = '<i class="fas fa-filter"></i> Hide Filters';
+            } else {
+                filtersSection.style.display = 'none';
+                elements.filterToggleBtn.innerHTML = '<i class="fas fa-filter"></i> Filters';
+            }
+        }
+        
+        function toggleSelectAll() {
+            const isChecked = elements.selectAll.checked;
+            const checkboxes = elements.usersTableBody.querySelectorAll('.user-select');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = isChecked;
+                const userId = parseInt(checkbox.dataset.userId);
+                
+                if (isChecked) {
+                    selectedUsers.add(userId);
+                } else {
+                    selectedUsers.delete(userId);
+                }
+            });
+            
+            updateBulkActions();
+        }
+        
+        function handleUserSelect(event) {
+            const checkbox = event.target;
+            const userId = parseInt(checkbox.dataset.userId);
+            
+            if (checkbox.checked) {
+                selectedUsers.add(userId);
+            } else {
+                selectedUsers.delete(userId);
+            }
+            
+            // Update "Select All" checkbox
+            const checkboxes = elements.usersTableBody.querySelectorAll('.user-select');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            elements.selectAll.checked = allChecked;
+            
+            updateBulkActions();
+        }
+        
+        function updateBulkActions() {
+            const count = selectedUsers.size;
+            elements.selectedCount.textContent = count;
+            
+            if (count > 0) {
+                elements.bulkActions.classList.add('show');
+            } else {
+                elements.bulkActions.classList.remove('show');
+            }
+        }
+        
+        function clearSelection() {
+            selectedUsers.clear();
+            elements.selectAll.checked = false;
+            elements.usersTableBody.querySelectorAll('.user-select').forEach(cb => {
+                cb.checked = false;
+            });
+            updateBulkActions();
+        }
+        
+        function bulkAction(action) {
+            if (selectedUsers.size === 0) return;
+            
+            let confirmMessage = '';
+            let successMessage = '';
+            
+            switch (action) {
+                case 'activate':
+                    confirmMessage = `Are you sure you want to activate ${selectedUsers.size} user(s)?`;
+                    successMessage = `${selectedUsers.size} user(s) activated successfully`;
+                    break;
+                case 'deactivate':
+                    confirmMessage = `Are you sure you want to deactivate ${selectedUsers.size} user(s)?`;
+                    successMessage = `${selectedUsers.size} user(s) deactivated successfully`;
+                    break;
+                case 'delete':
+                    confirmMessage = `Are you sure you want to delete ${selectedUsers.size} user(s)? This action cannot be undone.`;
+                    successMessage = `${selectedUsers.size} user(s) deleted successfully`;
+                    break;
+            }
+            
+            openConfirmModal(confirmMessage, () => {
+                // Perform bulk action
+                usersData = usersData.filter(user => {
+                    if (selectedUsers.has(user.id)) {
+                        if (action === 'delete') {
+                            return false; // Remove user
+                        } else if (action === 'activate') {
+                            user.status = 'active';
+                        } else if (action === 'deactivate') {
+                            user.status = 'inactive';
+                        }
+                    }
+                    return true;
+                });
+                
+                // Update filtered users
+                applyFilters();
+                clearSelection();
+                updateStats();
+                
+                showNotification(successMessage, 'success');
+                closeConfirmModal();
+            });
+        }
+        
+        function openUserModal(userId = null) {
+            currentEditUserId = userId;
+            
+            if (userId) {
+                // Edit mode
+                const user = usersData.find(u => u.id === userId);
+                if (!user) return;
+                
+                elements.modalTitle.innerHTML = '<i class="fas fa-user-edit"></i> Edit User';
+                elements.submitBtnText.textContent = 'Update User';
+                elements.firstName.value = user.firstName;
+                elements.lastName.value = user.lastName;
+                elements.email.value = user.email;
+                elements.role.value = user.role;
+                elements.status.value = user.status;
+                elements.phone.value = user.phone || '';
+                elements.avatarUrl.value = user.avatar || '';
+                elements.password.required = false;
+                elements.confirmPassword.required = false;
+            } else {
+                // Add mode
+                elements.modalTitle.innerHTML = '<i class="fas fa-user-plus"></i> Add New User';
+                elements.submitBtnText.textContent = 'Add User';
+                elements.userForm.reset();
+                elements.password.required = true;
+                elements.confirmPassword.required = true;
+            }
+            
+            elements.userModal.classList.add('show');
+        }
+        
+        function closeModal() {
+            elements.userModal.classList.remove('show');
+            currentEditUserId = null;
+        }
+        
+        function closeViewModal() {
+            elements.viewUserModal.classList.remove('show');
+        }
+        
+        function openConfirmModal(message, callback) {
+            elements.confirmMessage.textContent = message;
+            elements.confirmActionBtn.onclick = callback;
+            elements.confirmModal.classList.add('show');
+        }
+        
+        function closeConfirmModal() {
+            elements.confirmModal.classList.remove('show');
+        }
+        
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Validate passwords if in add mode
+            if (!currentEditUserId) {
+                if (elements.password.value.length < 8) {
+                    showNotification('Password must be at least 8 characters long', 'error');
+                    return;
+                }
+                
+                if (elements.password.value !== elements.confirmPassword.value) {
+                    showNotification('Passwords do not match', 'error');
+                    return;
+                }
+            }
+            
+            // Show loading
+            elements.submitLoading.style.display = 'inline-block';
+            elements.submitBtnText.textContent = currentEditUserId ? 'Updating...' : 'Adding...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                if (currentEditUserId) {
+                    // Update existing user
+                    const userIndex = usersData.findIndex(u => u.id === currentEditUserId);
+                    if (userIndex !== -1) {
+                        usersData[userIndex] = {
+                            ...usersData[userIndex],
+                            firstName: elements.firstName.value,
+                            lastName: elements.lastName.value,
+                            email: elements.email.value,
+                            role: elements.role.value,
+                            status: elements.status.value,
+                            phone: elements.phone.value,
+                            avatar: elements.avatarUrl.value || null
+                        };
+                    }
+                    
+                    showNotification('User updated successfully', 'success');
+                } else {
+                    // Add new user
+                    const newUser = {
+                        id: usersData.length > 0 ? Math.max(...usersData.map(u => u.id)) + 1 : 1,
+                        firstName: elements.firstName.value,
+                        lastName: elements.lastName.value,
+                        email: elements.email.value,
+                        phone: elements.phone.value,
+                        role: elements.role.value,
+                        status: elements.status.value,
+                        registrationDate: new Date().toISOString().split('T')[0],
+                        lastActive: new Date().toISOString().split('T')[0],
+                        avatar: elements.avatarUrl.value || null
+                    };
+                    
+                    usersData.unshift(newUser);
+                    showNotification('User added successfully', 'success');
+                }
+                
+                // Update UI
+                applyFilters();
+                updateStats();
+                closeModal();
+                
+                // Reset loading state
+                elements.submitLoading.style.display = 'none';
+                elements.submitBtnText.textContent = currentEditUserId ? 'Update User' : 'Add User';
+            }, 1000);
+        }
+        
+        // Global functions for inline event handlers
+        window.viewUser = function(userId) {
+            const user = usersData.find(u => u.id === userId);
+            if (!user) return;
+            
+            const avatarColorClass = `avatar-bg-${(userId % 5) + 1}`;
+            const initials = `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+            
+            const html = `
+                <div class="profile-header">
+                    ${user.avatar ? 
+                        `<img src="${user.avatar}" alt="${user.firstName} ${user.lastName}" class="profile-avatar">` :
+                        `<div class="avatar-text ${avatarColorClass}" style="width: 100px; height: 100px; font-size: 2rem; margin: 0 auto 15px;">${initials}</div>`
+                    }
+                    <h2 class="profile-name">${user.firstName} ${user.lastName}</h2>
+                    <span class="profile-role role-${user.role}">
+                        ${user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                    </span>
+                    <p class="profile-email">${user.email}</p>
+                </div>
+                
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">
+                            <span class="status-badge status-${user.status}">
+                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">${user.phone || 'Not provided'}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Registration Date</div>
+                        <div class="detail-value">${formatDate(user.registrationDate)}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Last Active</div>
+                        <div class="detail-value">${formatDate(user.lastActive)}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">User ID</div>
+                        <div class="detail-value">${user.id}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Account Type</div>
+                        <div class="detail-value">${user.role === 'admin' ? 'Administrator' : 
+                                                 user.role === 'editor' ? 'Content Editor' : 
+                                                 user.role === 'user' ? 'Regular User' : 'Guest'}</div>
+                    </div>
+                </div>
+                
+                <div class="form-actions" style="margin-top: 30px;">
+                    <button class="btn btn-secondary" onclick="editUser(${user.id}); closeViewModal();">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                    <button class="btn btn-primary" onclick="sendMessage(${user.id})">
+                        <i class="fas fa-envelope"></i> Send Message
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('userProfileView').innerHTML = html;
+            elements.viewUserModal.classList.add('show');
+        };
+        
+        window.editUser = function(userId) {
+            openUserModal(userId);
+        };
+        
+        window.deleteUser = function(userId) {
+            const user = usersData.find(u => u.id === userId);
+            if (!user) return;
+            
+            openConfirmModal(
+                `Are you sure you want to delete ${user.firstName} ${user.lastName}? This action cannot be undone.`,
+                () => {
+                    usersData = usersData.filter(u => u.id !== userId);
+                    applyFilters();
+                    updateStats();
+                    showNotification('User deleted successfully', 'success');
+                    closeConfirmModal();
+                }
+            );
+        };
+        
+        window.sendMessage = function(userId) {
+            showNotification('Message feature coming soon!', 'info');
+        };
+        
+        function exportUsers() {
+            // Convert to CSV
+            let csv = 'ID,Name,Email,Role,Status,Registration Date,Last Active,Phone\n';
+            
+            usersData.forEach(user => {
+                csv += `${user.id},"${user.firstName} ${user.lastName}",${user.email},${user.role},${user.status},${user.registrationDate},${user.lastActive},${user.phone || ''}\n`;
+            });
+            
+            // Create download link
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `users-export-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showNotification('Users exported successfully', 'success');
+        }
+        
+        function refreshUsers() {
+            elements.refreshUsersBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+            
+            setTimeout(() => {
+                // In a real app, this would fetch fresh data from the server
+                elements.refreshUsersBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                showNotification('User data refreshed', 'success');
+            }, 1000);
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification-toast';
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            notification.innerHTML = `
+                <i class="fas ${icons[type] || 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Style the notification
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#2ecc71' : 
+                           type === 'error' ? '#e74c3c' : '#3498db'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+                z-index: 9999;
+                animation: slideInRight 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 500;
+            `;
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+            
+            // Add animation styles if not present
+            if (!document.getElementById('notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideInRight {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOutRight {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        function animateCounter(element, start, end, duration = 1000) {
+            if (start === end) return;
+            
+            const range = end - start;
+            const increment = range > 0 ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / range));
+            
+            let current = start;
+            const timer = setInterval(() => {
+                current += increment;
+                element.textContent = current.toLocaleString();
+                
+                if (current === end) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    });
+</script>
+
+<%-include("footer")%>

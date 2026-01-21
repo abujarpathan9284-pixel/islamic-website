@@ -1,0 +1,98 @@
+<%-include("navbar")%>
+    <style>
+        /* Additional styles for Hadith page */
+        .category-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .category-btn {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        .category-btn.active {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        .hadith-content {
+            display: block;
+        }
+    </style>
+
+
+    <!-- Hadith Page Content -->
+    <div class="page-content">
+        <div class="container">
+            <h1 class="section-title" style="text-align: center;">Hadith Studies</h1>
+            <p class="text-center mb-5">Learn authentic Hadith categorized by topics with simple explanations.</p>
+            
+            <div class="category-buttons">
+                <a href="#salah" class="category-btn active">Salah</a>
+                <a href="#manners" class="category-btn">Manners</a>
+                <a href="#parents" class="category-btn">Parents</a>
+                <a href="#honesty" class="category-btn">Honesty</a>
+            </div>
+            
+            <div class="hadith-content" id="salah">
+                <div class="section-box mb-4">
+                    <p class="arabic-text mb-3">إنَّ أَوَّلَ مَا يُحَاسَبُ بِهِ الْعَبْدُ يَوْمَ الْقِيَامَةِ الصَّلَاةُ</p>
+                    <p class="mb-3"><strong>Translation:</strong> "The first thing for which a person will be brought to account on the Day of Resurrection will be his prayer."</p>
+                    <p class="mb-3"><strong>Explanation:</strong> This hadith emphasizes the importance of Salah in Islam. It will be the first act of worship we are questioned about on the Day of Judgment, highlighting its fundamental role in a Muslim's life.</p>
+                    <span class="badge-green">Sunan an-Nasa'i</span>
+                </div>
+                
+                <div class="section-box mb-4">
+                    <p class="arabic-text mb-3">مِفْتَاحُ الْجَنَّةِ الصَّلَاةُ وَمِفْتَاحُ الصَّلَاةِ الطُّهُورُ</p>
+                    <p class="mb-3"><strong>Translation:</strong> "The key to Paradise is prayer, and the key to prayer is purification."</p>
+                    <p class="mb-3"><strong>Explanation:</strong> This hadith shows the connection between prayer and entering Paradise, and emphasizes the importance of purification (wudu) as a prerequisite for valid prayer.</p>
+                    <span class="badge-green">Sunan Ibn Majah</span>
+                </div>
+            </div>
+            
+            <div class="hadith-content" id="manners" style="display: none;">
+                <div class="section-box mb-4">
+                    <p class="arabic-text mb-3">لاَ يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ</p>
+                    <p class="mb-3"><strong>Translation:</strong> "None of you truly believes until he loves for his brother what he loves for himself."</p>
+                    <p class="mb-3"><strong>Explanation:</strong> This hadith teaches the golden rule of Islam - to treat others the way you want to be treated. It emphasizes empathy and selflessness as essential qualities of faith.</p>
+                    <span class="badge-green">Sahih Bukhari</span>
+                </div>
+            </div>
+            
+            <div class="hadith-content" id="parents" style="display: none;">
+                <div class="section-box mb-4">
+                    <p class="arabic-text mb-3">رِضَا الرَّبِّ فِي رِضَا الْوَالِدِ، وَسَخَطُ الرَّبِّ فِي سَخَطِ الْوَالِدِ</p>
+                    <p class="mb-3"><strong>Translation:</strong> "The pleasure of the Lord is in the pleasure of the parent, and the anger of the Lord is in the anger of the parent."</p>
+                    <p class="mb-3"><strong>Explanation:</strong> This hadith highlights the importance of respecting and obeying parents in Islam. Pleasing them is equivalent to pleasing Allah, while angering them angers Allah.</p>
+                    <span class="badge-green">Sunan At-Tirmidhi</span>
+                </div>
+            </div>
+            
+            <div class="hadith-content" id="honesty" style="display: none;">
+                <div class="section-box mb-4">
+                    <p class="arabic-text mb-3">عَلَيْكُمْ بِالصِّدْقِ فَإِنَّ الصِّدْقَ يَهْدِي إِلَى الْبِرِّ</p>
+                    <p class="mb-3"><strong>Translation:</strong> "You must be truthful, for truthfulness leads to righteousness."</p>
+                    <p class="mb-3"><strong>Explanation:</strong> This hadith emphasizes the importance of honesty in all matters. Truthfulness is not just a moral virtue but a path that leads to overall righteousness in character and deeds.</p>
+                    <span class="badge-green">Sahih Muslim</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <%-include("footer")%>
+    

@@ -1,0 +1,44 @@
+<%-include("navbar")%>
+   
+
+<div class="container-fluid" >
+    <h1>Company Detiles</h1>
+   
+    <form action="/admin/company" method="post">
+     <div class="row p-2" style="border: 2px solid black; ">
+        <div class="col-md-4 mt-3 ">
+                Company name  <br><br>
+                <input type="text" name="company_name" value="<%=detiles[0].company_name%>" class="from-control" id="">
+         </div>
+         <div class="col-md-4 mt-3">
+            Company Mobile <br><br>
+            <input type="number" class="from-control" value="<%=detiles[0].company_mo%>" name="company_mo" id="">
+         </div>
+           <div class="col-md-4 mt-3">
+            Company Email <br><br>
+            <input type="email" class="from-control" value="<%=detiles[0].company_email%>" name="company_email" id="">
+         </div>
+         <div class="col-md-4 mt-3" >
+            Company Facebook <br><br>
+            <input type="text" class="from-control" value="<%=detiles[0].company_face%>" name="company_face" id="">
+         </div>
+         <div class="col-md-4 mt-3" >
+            Company whatsaap <br><br>
+            <input type="text" class="from-control" value="<%=detiles[0].company_what%>" name="company_what" id="">
+         </div>
+         <div class="col-md-4 mt-3" >
+            Company instagam <br><br>
+            <input type="text" class="from-control" value="<%=detiles[0].company_insta%>" name="company_insta" id="">
+         </div>
+          <div class="col-md-4 mt-3" >
+            Company Youtube <br><br>
+            <input type="text" value="<%=detiles[0].company_youtube%>" name="company_youtube" id="">
+            <br><br>
+         </div>
+    </div>
+    <div class="col-md-12 mt-3 " style="text-align: center; ">
+        <button class="btn btn-success">Submit</button>
+    </div>
+  </form>
+       
+</div>

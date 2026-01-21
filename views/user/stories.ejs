@@ -1,0 +1,566 @@
+<%-include("navbar")%>
+    <style>
+        /* Additional styles for Stories page */
+        .story-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .story-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .moral-box {
+            background-color: var(--light-green);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid var(--gold-color);
+        }
+        
+        .moral-box h4 {
+            color: var(--gold-color);
+            margin-bottom: 10px;
+        }
+        
+        /* Modal Styles */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1050;
+        }
+        
+        .image-modal.active {
+            display: block;
+        }
+        
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+            z-index: 1051;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+            border-radius: 8px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Story Detail Modal */
+        .story-detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1050;
+        }
+        
+        .story-detail-modal.active {
+            display: block;
+        }
+        
+        .detail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .detail-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1051;
+        }
+        
+        .close-detail {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .animate-fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .story-image {
+                height: 200px;
+            }
+            
+            .section-box {
+                padding: 15px;
+            }
+            
+            .moral-box {
+                padding: 15px;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+            }
+            
+            .detail-content {
+                padding: 20px;
+                width: 95%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .story-image {
+                height: 180px;
+            }
+            
+            .card {
+                margin-bottom: 15px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Story Actions */
+        .story-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Card hover effects */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+
+    <!-- Stories Page Content -->
+    <div class="page-content">
+        <div class="container">
+            <h1 class="section-title" style="text-align: center;">Islamic Stories</h1>
+            <p class="text-center mb-5">Inspirational stories from the lives of Prophets and Sahaba with moral lessons.</p>
+            
+            <!-- Dynamic Stories Section -->
+          
+            <div class="section-box mb-4 fade-in">
+                <h3 class="mb-4"></h3>
+                <div class="mb-4" >
+                  
+                          <img style="height: 500px; width: 100%;" src="https://myislam.sfo3.digitaloceanspaces.com/assets/2024/prophet-stories/yusuf/prophet-yusuf-as-header.png" class="story-image" alt="">
+                  
+                </div>
+                <p class="mb-3"></p>
+                
+                <h5 class="mt-4">Key Lessons:</h5>
+                <ul class="mb-4">
+                    <li><strong>Patience in adversity:</strong> Despite being thrown into a well by his brothers, sold into slavery, and imprisoned, Yusuf remained patient and faithful to Allah.</li>
+                    <li><strong>Resistance to temptation:</strong> When the wife of his master tried to seduce him, he chose to be imprisoned rather than commit sin.</li>
+                    <li><strong>Forgiveness:</strong> When his brothers came to him years later, he forgave them for their past wrongs.</li>
+                    <li><strong>Trust in Allah's plan:</strong> Every difficulty in Yusuf's life was part of Allah's plan to elevate him to a position of power in Egypt.</li>
+                </ul>
+                
+               
+                <div class="moral-box">
+                    <h4><i class="fas fa-lightbulb me-2"></i> Moral for Today</h4>
+                    <p class="mb-0">No matter how difficult your situation seems, trust that Allah has a plan for you. Stay patient, maintain your integrity, and never lose faith that better days are ahead.</p>
+                </div>
+           
+                
+                <!-- Story Actions -->
+                <div class="story-actions">
+                    <button class="btn btn-outline-primary btn-sm share-btn" data-title="">
+                        <i class="fas fa-share-alt me-1"></i> Share
+                    </button>
+                    <button class="btn btn-outline-success btn-sm save-btn" data-id="">
+                        <i class="fas fa-bookmark me-1"></i> Save
+                    </button>
+                </div>
+            </div>
+        
+            
+            <!-- Static Stories Cards -->
+            <div class="row mt-4">
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            Story of Prophet Musa
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">How Allah saved Musa as a baby and later chose him to confront Pharaoh and lead the Israelites out of Egypt.</p>
+                            <a href="#" class="cta-button btn-sm read-story-btn mt-auto" data-title="Story of Prophet Musa">Read Story</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header gold-bg">
+                            Abu Bakr's Loyalty
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">The story of Abu Bakr's unwavering support for the Prophet Muhammad (ﷺ) during the migration to Madinah.</p>
+                            <a href="#" class="cta-button btn-sm read-story-btn mt-auto" data-title="Abu Bakr's Loyalty">Read Story</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            Story of Prophet Ibrahim
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">How Prophet Ibrahim stood firm in his faith against his people who worshipped idols, and his willingness to sacrifice his son for Allah.</p>
+                            <a href="#" class="cta-button btn-sm read-story-btn mt-auto" data-title="Story of Prophet Ibrahim">Read Story</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header gold-bg">
+                            Bilal's Faith
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">The story of Bilal ibn Rabah, who endured torture but never abandoned his faith, and became the first mu'addhin of Islam.</p>
+                            <a href="#" class="cta-button btn-sm read-story-btn mt-auto" data-title="Bilal's Faith">Read Story</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="image-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img class="modal-image" src="" alt="">
+        </div>
+    </div>
+
+    <div class="story-detail-modal">
+        <div class="detail-overlay"></div>
+        <div class="detail-content">
+            <span class="close-detail">&times;</span>
+            <h3 id="detail-title"></h3>
+            <p id="detail-description"></p>
+            <div class="moral-box mt-3">
+                <h4><i class="fas fa-lightbulb me-2"></i> Key Lessons</h4>
+                <p id="detail-lessons"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize modals
+            const imageModal = document.querySelector('.image-modal');
+            const storyDetailModal = document.querySelector('.story-detail-modal');
+            
+            // Story images modal functionality
+            const storyImages = document.querySelectorAll('.story-image');
+            storyImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    const modalImg = imageModal.querySelector('.modal-image');
+                    modalImg.src = this.src;
+                    modalImg.alt = this.alt;
+                    imageModal.classList.add('active');
+                });
+            });
+            
+            // Close image modal
+            imageModal.querySelector('.close-modal').addEventListener('click', () => {
+                imageModal.classList.remove('active');
+            });
+            
+            imageModal.querySelector('.modal-overlay').addEventListener('click', () => {
+                imageModal.classList.remove('active');
+            });
+            
+            // Close on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    imageModal.classList.remove('active');
+                    storyDetailModal.classList.remove('active');
+                }
+            });
+            
+            // Read story buttons for static cards
+            const readStoryBtns = document.querySelectorAll('.read-story-btn');
+            const staticStories = {
+                "Story of Prophet Musa": {
+                    description: "How Allah saved Musa as a baby and later chose him to confront Pharaoh and lead the Israelites out of Egypt.",
+                    lessons: "Trust in Allah's protection, courage in standing up for truth, and perseverance in the face of adversity."
+                },
+                "Abu Bakr's Loyalty": {
+                    description: "The story of Abu Bakr's unwavering support for the Prophet Muhammad (ﷺ) during the migration to Madinah.",
+                    lessons: "True friendship, selfless support for the truth, and complete trust in Allah's messenger."
+                },
+                "Story of Prophet Ibrahim": {
+                    description: "How Prophet Ibrahim stood firm in his faith against his people who worshipped idols, and his willingness to sacrifice his son for Allah.",
+                    lessons: "Monotheism, complete submission to Allah's will, and courage in facing opposition."
+                },
+                "Bilal's Faith": {
+                    description: "The story of Bilal ibn Rabah, who endured torture but never abandoned his faith, and became the first mu'addhin of Islam.",
+                    lessons: "Perseverance in faith, equality in Islam, and the power of sincere devotion."
+                }
+            };
+            
+            readStoryBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const storyTitle = this.getAttribute('data-title');
+                    const story = staticStories[storyTitle];
+                    
+                    if (story) {
+                        document.getElementById('detail-title').textContent = storyTitle;
+                        document.getElementById('detail-description').textContent = story.description;
+                        document.getElementById('detail-lessons').textContent = story.lessons;
+                        storyDetailModal.classList.add('active');
+                    }
+                });
+            });
+            
+            // Close story detail modal
+            storyDetailModal.querySelector('.close-detail').addEventListener('click', () => {
+                storyDetailModal.classList.remove('active');
+            });
+            
+            storyDetailModal.querySelector('.detail-overlay').addEventListener('click', () => {
+                storyDetailModal.classList.remove('active');
+            });
+            
+            // Share functionality
+            const shareBtns = document.querySelectorAll('.share-btn');
+            shareBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const storyTitle = this.getAttribute('data-title') || 
+                                     this.closest('.section-box')?.querySelector('h3')?.textContent || 
+                                     'Islamic Story';
+                    
+                    if (navigator.share) {
+                        navigator.share({
+                            title: storyTitle,
+                            text: `Check out this inspiring Islamic story: ${storyTitle}`,
+                            url: window.location.href,
+                        }).catch(err => {
+                            console.log('Error sharing:', err);
+                            fallbackShare(storyTitle);
+                        });
+                    } else {
+                        fallbackShare(storyTitle);
+                    }
+                });
+            });
+            
+            function fallbackShare(title) {
+                const shareText = `Check out this Islamic story: ${title}\n${window.location.href}`;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        showToast('Link copied to clipboard!');
+                    }).catch(err => {
+                        prompt('Copy this link to share:', shareText);
+                    });
+                } else {
+                    prompt('Copy this link to share:', shareText);
+                }
+            }
+            
+            // Save functionality
+            const saveBtns = document.querySelectorAll('.save-btn');
+            saveBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const storyId = this.getAttribute('data-id');
+                    // In a real app, this would make an API call
+                    this.innerHTML = '<i class="fas fa-check me-1"></i> Saved';
+                    this.classList.remove('btn-outline-success');
+                    this.classList.add('btn-success');
+                    showToast('Story saved to your favorites!');
+                });
+            });
+            
+            // Toast notification function
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification';
+                toast.textContent = message;
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: var(--green-color);
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+            
+            // Add CSS for toast animation
+            const toastStyle = document.createElement('style');
+            toastStyle.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(toastStyle);
+            
+            // Scroll animation for story sections
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.fade-in').forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Responsive adjustments for card layout
+            function adjustCardLayout() {
+                const cards = document.querySelectorAll('.card');
+                const isMobile = window.innerWidth < 768;
+                
+                cards.forEach(card => {
+                    if (isMobile) {
+                        card.style.marginBottom = '15px';
+                    } else {
+                        card.style.marginBottom = '';
+                    }
+                });
+            }
+            
+            // Initial adjustment
+            adjustCardLayout();
+            
+            // Adjust on resize
+            window.addEventListener('resize', adjustCardLayout);
+            
+            // Back to top button
+            const backToTop = document.createElement('button');
+            backToTop.innerHTML = '↑';
+            backToTop.className = 'back-to-top';
+            backToTop.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                width: 50px;
+                height: 50px;
+                background: var(--gold-color);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                font-size: 20px;
+                cursor: pointer;
+                display: none;
+                z-index: 100;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            `;
+            
+            document.body.appendChild(backToTop);
+            
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTop.style.display = 'block';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+<%-include("footer")%>

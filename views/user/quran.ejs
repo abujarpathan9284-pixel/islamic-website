@@ -1,0 +1,155 @@
+
+<%-include("navbar")%>
+    <style>
+        /* Additional styles for Quran page */
+        .surah-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .surah-item {
+            display: block;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            text-decoration: none;
+            color: var(--dark-color);
+            transition: all 0.3s;
+        }
+        
+        .surah-item:hover {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+        }
+        
+        .surah-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .surah-name {
+            font-weight: 600;
+        }
+        
+        .verse-count {
+            color: var(--gold-color);
+            font-size: 0.9rem;
+        }
+    </style>
+
+    <!-- Quran Page Content -->
+    <div class="page-content">
+        <div class="container">
+            <h1 class="section-title" style="text-align: center;" >Quran Learning</h1>
+            <p class="text-center mb-5">Read, listen, and understand the Holy Quran with translation and simple explanation.</p>
+            
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="section-box">
+                        <h4><i class="fas fa-list me-2"></i> Surah List</h4>
+                        <div class="surah-list mt-3">
+                            <a href="https://quran.com/1" class="surah-item">
+                                <div class="surah-info">
+                                    <div class="surah-name">1. Al-Fatihah (The Opening)</div>
+                                    <div class="verse-count">7 verses</div>
+                                </div>
+                            </a>
+                            <a href="#" class="surah-item">
+                                <div class="surah-info">
+                                    <div class="surah-name">2. Al-Baqarah (The Cow)</div>
+                                    <div class="verse-count">286 verses</div>
+                                </div>
+                            </a>
+                            <a href="#" class="surah-item">
+                                <div class="surah-info">
+                                    <div class="surah-name">3. Ali Imran (Family of Imran)</div>
+                                    <div class="verse-count">200 verses</div>
+                                </div>
+                            </a>
+                            <a href="#" class="surah-item">
+                                <div class="surah-info">
+                                    <div class="surah-name">36. Yasin</div>
+                                    <div class="verse-count">83 verses</div>
+                                </div>
+                            </a>
+                            <a href="#" class="surah-item">
+                                <div class="surah-info">
+                                    <div class="surah-name">55. Ar-Rahman (The Most Merciful)</div>
+                                    <div class="verse-count">78 verses</div>
+                                </div>
+                            </a>
+                            <a href="#" class="surah-item">
+                                <div class="surah-info">
+                                    <div class="surah-name">67. Al-Mulk (The Sovereignty)</div>
+                                    <div class="verse-count">30 verses</div>
+                                </div>
+                            </a>
+                            <a href="#" class="surah-item">
+                                <div class="surah-info">
+                                    <div class="surah-name">112. Al-Ikhlas (The Sincerity)</div>
+                                    <div class="verse-count">4 verses</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="section-box">
+                        <h4><i class="fas fa-headphones me-2"></i> Recitation</h4>
+                        <p class="mb-3">Listen to beautiful Quran recitation by famous Qaris.</p>
+                        <audio controls class="audio-player">
+                            <source src="https://www.islamcan.com/audio/quran/abdulbasit/001.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <div class="mt-3">
+                            <p><strong>Popular Reciters:</strong></p>
+                            <ul>
+                                <li>Sheikh Mishary Rashid Alafasy</li>
+                                <li>Sheikh Abdul Rahman Al-Sudais</li>
+                                <li>Sheikh Saad Al-Ghamdi</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="section-box">
+                        <h3>Surah Al-Fatihah</h3>
+                        <p class="text-muted mb-4">The Opening • Makki • 7 verses</p>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">Arabic Text</h5>
+                            <div class="arabic-text">
+                                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ (١)
+                                <br>الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (٢)
+                                <br>الرَّحْمَٰنِ الرَّحِيمِ (٣)
+                                <br>مَالِكِ يَوْمِ الدِّينِ (٤)
+                                <br>إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (٥)
+                                <br>اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (٦)
+                                <br>صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (٧)
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">English Translation</h5>
+                            <div>
+                                <p>1. In the name of Allah, the Entirely Merciful, the Especially Merciful.</p>
+                                <p>2. [All] praise is [due] to Allah, Lord of the worlds.</p>
+                                <p>3. The Entirely Merciful, the Especially Merciful.</p>
+                                <p>4. Sovereign of the Day of Recompense.</p>
+                                <p>5. It is You we worship and You we ask for help.</p>
+                                <p>6. Guide us to the straight path.</p>
+                                <p>7. The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h5 class="mb-3">Simple Explanation (Tafseer)</h5>
+                            <div>
+                                <p>Surah Al-Fatihah is the first chapter of the Quran and is recited in every unit of the Muslim prayer. It establishes the most fundamental principles of Islam - the oneness of Allah, His mercy, and the Day of Judgment. The Surah is a prayer to Allah for guidance on the straight path, which is the path of those whom Allah has blessed, not the path of those who earned His anger or went astray.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <%-include("footer")%>
